@@ -1,16 +1,12 @@
-using System;
 using Xunit;
-using Notes;
 using Notes.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Notes.Tests
 {
     public class IntegrationTest
     {
-
         private static string _connectionString = "Server=(localdb)\\mssqllocaldb;Database=NotesContext-233a2f94-4597-40be-8b62-dd6f481e1178;Trusted_Connection=True;MultipleActiveResultSets=true";
         private static DbContextOptionsBuilder<NotesContext> _optionsBuilder = new DbContextOptionsBuilder<NotesContext>().UseSqlServer(_connectionString);
         private static NotesContext _context = new NotesContext(_optionsBuilder.Options);
@@ -46,6 +42,7 @@ namespace Notes.Tests
                     Assert.Equal(tmpNote1.Text, n.Text);
                 count++;
             }
+            ClearDB();
         }
 
         [Fact]
@@ -64,6 +61,7 @@ namespace Notes.Tests
             note = okObjectResult.Value as Note;
 
             Assert.Equal(tmpNote.Text, note.Text);
+            ClearDB();
         }
 
         [Fact]
@@ -88,7 +86,7 @@ namespace Notes.Tests
             var modifiedNoteFromGet = okObjectResult.Value as Note;
             
             Assert.Equal(modifiedNote.Text, modifiedNoteFromGet.Text);
-
+            ClearDB();
         }
         
         [Fact]
@@ -112,9 +110,7 @@ namespace Notes.Tests
             var notFoundResult = actionResult3.Result as NotFoundResult;
 
             Assert.Equal(404, notFoundResult.StatusCode);
-           
-
+            ClearDB();
         }
-
     }
 }
