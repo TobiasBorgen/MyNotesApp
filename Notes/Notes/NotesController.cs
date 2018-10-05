@@ -36,7 +36,6 @@ namespace Notes
                 return BadRequest(ModelState);
             }
 
-            //var note = await _context.Note.FindAsync(id);
             var note = _context.Note.Find(id);
 
             if (note == null)
@@ -61,12 +60,10 @@ namespace Notes
                 return BadRequest();
             }
             _context.Entry(note).Property("Text").CurrentValue = note.Text;
-            //_context.Entry(note).State = EntityState.Modified;
             _context.Entry(note).Property("Text").IsModified = true;
 
             try
             {
-                //await _context.SaveChangesAsync();
                 _context.SaveChanges();
                 _context.Entry(note).Reload();
             }
@@ -95,7 +92,6 @@ namespace Notes
             }
 
             _context.Note.Add(note);
-            //await _context.SaveChangesAsync();
             _context.SaveChanges();
 
             return CreatedAtAction("GetNote", new { id = note.ID }, note);
@@ -110,7 +106,6 @@ namespace Notes
                 return BadRequest(ModelState);
             }
 
-            //var note = await _context.Note.FindAsync(id);
             var note = _context.Note.Find(id);
             if (note == null)
             {
@@ -118,7 +113,6 @@ namespace Notes
             }
 
             _context.Note.Remove(note);
-            //await _context.SaveChangesAsync();
             _context.SaveChanges();
 
             return Ok(note);
